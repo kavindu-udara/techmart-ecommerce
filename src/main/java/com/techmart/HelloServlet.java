@@ -1,4 +1,4 @@
-package com.example.techmartecommerce;
+package com.techmart;
 
 import java.io.*;
 import javax.servlet.http.*;

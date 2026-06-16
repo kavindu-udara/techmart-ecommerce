@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
+    <groupId>com.techmart</groupId>
     <artifactId>techmart-ecommerce</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>techmart-ecommerce</name>
@@ -36,6 +36,16 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.11</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Testing: Arquillian for In-Container EJB/JMS Testing -->
     </dependencies>
 
     <build>
