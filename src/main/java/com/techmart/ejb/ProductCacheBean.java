@@ -1,6 +1,7 @@
 package com.techmart.ejb;
 
 import com.techmart.entity.Product;
+import com.techmart.monitoring.Monitored;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 
 @Singleton
 @Startup
+@Monitored
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class ProductCacheBean {
 

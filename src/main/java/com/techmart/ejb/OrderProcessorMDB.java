@@ -2,6 +2,7 @@ package com.techmart.ejb;
 
 import com.techmart.entity.Order;
 import com.techmart.entity.OrderItem;
+import com.techmart.monitoring.Monitored;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
                 @ActivationConfigProperty(propertyName = "maxMessagesPerSession", propertyValue = "5"),
         }
 )
-
+@Monitored
 public class OrderProcessorMDB implements MessageListener {
     private static final Logger logger = Logger.getLogger(OrderProcessorMDB.class.getName());
 

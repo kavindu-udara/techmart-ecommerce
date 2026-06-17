@@ -1,6 +1,7 @@
 package com.techmart.ejb;
 
 import com.techmart.entity.Product;
+import com.techmart.monitoring.Monitored;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.logging.Logger;
 
 @Stateless
+@Monitored
 public class InventoryBean {
 
     private static final Logger logger = Logger.getLogger(InventoryBean.class.getName());
