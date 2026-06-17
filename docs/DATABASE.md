@@ -57,4 +57,17 @@ CREATE TABLE order_items
 );
 CREATE INDEX idx_order_items_order_id ON order_items (order_id);
 CREATE INDEX idx_order_items_product_id ON order_items (product_id);
+
+
+-- =================================================================
+-- Initial Seed Data (For Testing & Demonstration)
+-- =================================================================
+INSERT INTO users (username, email, password_hash)
+VALUES ('testuser', 'test@techmart.com', 'hashed_password_123');
+
+INSERT INTO products (name, description, price, stock_quantity)
+VALUES ('Laptop Pro', 'High-performance laptop', 1200.00, 100),
+       ('Wireless Mouse', 'Ergonomic wireless mouse', 25.50, 500),
+       ('Mechanical Keyboard', 'RGB mechanical keyboard', 85.00, 150);
+
 ```
