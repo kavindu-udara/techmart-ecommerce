@@ -47,4 +47,8 @@ public class MetricsAggregatorBean {
         }
 
     }
+
+    public Map<String, MethodMetrics> getAllMetrics() {
+        return metricsMap;
+    }
 }

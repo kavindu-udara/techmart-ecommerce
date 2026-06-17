@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 
 @Singleton
 @Startup
-@Monitored
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
+@Monitored
 public class ProductCacheBean {
 
     private static final Logger logger = Logger.getLogger(ProductCacheBean.class.getName());
