@@ -7,6 +7,7 @@ import com.techmart.entity.Product;
 import com.techmart.entity.User;
 import com.techmart.jms.OrderMessageProducer;
 
+import com.techmart.monitoring.Monitored;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -23,6 +24,7 @@ import jakarta.ws.rs.core.Response;
 
 @Stateless
 @Path("/orders")
+@Monitored
 public class OrderResource {
     private static final Logger logger = Logger.getLogger(OrderResource.class.getName());
 

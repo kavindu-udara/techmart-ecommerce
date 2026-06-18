@@ -2,6 +2,7 @@ package com.techmart.rest;
 
 import com.techmart.monitoring.MetricsAggregatorBean;
 
+import com.techmart.monitoring.Monitored;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Path("/metrics")
+@Monitored
 public class MetricsResource {
     @Inject
     private MetricsAggregatorBean metricsAggregatorBean;

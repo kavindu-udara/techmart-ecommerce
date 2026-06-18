@@ -23,6 +23,7 @@ public class PerformanceInterceptor implements Serializable {
         String methodName = context.getMethod().getName();
         String fullMethodName = className + "." + methodName;
 
+        logger.info("INTERCEPTOR TRIGGERED FOR: " + fullMethodName);
         // Start high-precision timer
         long startTime = System.nanoTime();
 
