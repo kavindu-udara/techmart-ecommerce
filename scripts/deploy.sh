@@ -3,9 +3,23 @@
 # Configuration
 APP_NAME="techmart-ecommerce-1.0-SNAPSHOT" # Must end in .war even for exploded
 DEPLOYMENT_DIR="target/$APP_NAME"  # The directory to deploy (exploded)
-CLI_PATH="/usr/local/wildfly/bin/jboss-cli.sh" # Adjust path to your WildFly installation
-CLI_USER="kavindu"
-CLI_PASS="Kavindu@123"
+
+# Check if .env file exists
+if [ -f ".env" ]; then
+    # Enable automatic export of all variables
+    set -a
+    # Source the .env file
+    source .env
+    # Disable automatic export
+    set +a
+else
+    echo "Error: .env file not found." >&2
+    exit 1
+fi
+
+CLI_USER=$WILDFLY_CLI_USERNAME
+CLI_PASS=$WILDFLY_CLI_PASSWORD
+CLI_PATH=$WILDFLY_CLI_PATH
 
 # --- Resolve WildFly CLI Path ---
 CLI_BIN=($CLI_PATH)
