@@ -1,10 +1,11 @@
 import './App.css'
+import { Button } from './components/ui/button'
 
 function App() {
 
   return (
     <>
-      <h1 className="text-5xl underline">Vite + React reload</h1>
+      <Button>Hello</Button>
     </>
   )
 }

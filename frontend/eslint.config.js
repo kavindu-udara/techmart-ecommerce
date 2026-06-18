@@ -20,4 +20,16 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+   {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': [
+        'warn', // or 'error'
+        { 
+          allowConstantExport: true, // Explicitly ensure constants are allowed
+          allowExportNames: ['loader', 'action', 'meta', 'headers', 'config'], // Add specific function names if needed
+        },
+      ],
+    },
+  },
 ])
