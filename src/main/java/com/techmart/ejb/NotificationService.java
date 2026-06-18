@@ -1,8 +1,8 @@
 package com.techmart.ejb;
 
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
-import javax.ejb.Stateless;
+import jakarta.ejb.AsyncResult;
+import jakarta.ejb.Asynchronous;
+import jakarta.ejb.Stateless;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 

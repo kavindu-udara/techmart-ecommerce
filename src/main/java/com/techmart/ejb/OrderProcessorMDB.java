@@ -4,14 +4,14 @@ import com.techmart.entity.Order;
 import com.techmart.entity.OrderItem;
 import com.techmart.monitoring.Monitored;
 
-import javax.annotation.Resource;
-import javax.ejb.*;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.annotation.Resource;
+import jakarta.ejb.*;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
+import jakarta.jms.TextMessage;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
         name = "OrderProcessorMDB",
         activationConfig = {
                 @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:/jms/queue/OrderQueue"),
-                @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+                @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue"),
                 @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
 
 //                Limits the number of concurrent threads processing messages

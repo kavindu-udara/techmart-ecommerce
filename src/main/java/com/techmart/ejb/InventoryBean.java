@@ -3,10 +3,10 @@ package com.techmart.ejb;
 import com.techmart.entity.Product;
 import com.techmart.monitoring.Monitored;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceContext;
 import java.util.logging.Logger;
 
 @Stateless
