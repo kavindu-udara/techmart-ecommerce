@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMart Admin Dashboard</title>
+    <!-- Bootstrap 5 for clean, professional UI -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .metric-card { transition: transform 0.2s; }
+        .metric-card:hover { transform: translateY(-5px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .table-success { background-color: #d1e7dd !important; }
+        .table-warning { background-color: #fff3cd !important; }
+        .table-danger { background-color: #f8d7da !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">📊 TechMart Performance & Monitoring Dashboard</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Action Panel: Simulate Load -->
+        <div class="card mb-4 metric-card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">1. Simulate Business Load</h5>
+            </div>
+            <div class="card-body">
+                <p>Click the button to place a test order. This triggers the entire flow: <strong>REST API -> JPA -> JMS Queue -> MDB -> Async Notification</strong>.</p>
+                <button id="placeOrderBtn" class="btn btn-success btn-lg">Place Test Order (Laptop Pro)</button>
+                <span id="orderStatus" class="ms-3 text-muted fw-bold"></span>
+            </div>
+        </div>
+
+        <!-- Metrics Panel: Real-Time Telemetry -->
+        <div class="card metric-card">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">2. Real-Time EJB Performance Metrics</h5>
+                <span id="lastUpdated" class="badge bg-light text-dark">Updating...</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Rows are color-coded: <span class="badge bg-success">Fast (<100ms)</span> <span class="badge bg-warning text-dark">Medium (<500ms)</span> <span class="badge bg-danger">Slow (>500ms)</span></p>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Component / Method</th>
+                                <th class="text-center">Total Invocations</th>
+                                <th class="text-center">Avg Execution Time (ms)</th>
+                                <th class="text-center">Max Execution Time (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metricsTableBody">
+                            <tr><td colspan="4" class="text-center">Waiting for data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base URL for our JAX-RS REST endpoints
+        const API_BASE = '/techmart/api';
+
+        // --- 1. Place Order Logic ---
+        document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+            const statusSpan = document.getElementById('orderStatus');
+            statusSpan.innerText = "Processing...";
+            statusSpan.className = "ms-3 text-warning fw-bold";
+
+            const payload = {
+                userId: 1, // Matches our seed data in schema.sql
+                items: [ { productId: 1, quantity: 1 } ] // Laptop Pro
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusSpan.innerText = `✅ Success! Order #${data.orderId} queued for MDB processing.`;
+                    statusSpan.className = "ms-3 text-success fw-bold";
+                } else {
+                    statusSpan.innerText = "❌ Failed to place order.";
+                    statusSpan.className = "ms-3 text-danger fw-bold";
+                }
+            } catch (error) {
+                statusSpan.innerText = "❌ Network Error.";
+                statusSpan.className = "ms-3 text-danger fw-bold";
+            }
+        });
+
+        // --- 2. Fetch Metrics Logic ---
+        async function fetchMetrics() {
+            try {
+                const response = await fetch(`${API_BASE}/metrics`);
+                if (response.ok) {
+                    const data = await response.json();
+                    renderMetrics(data.metrics);
+                    document.getElementById('lastUpdated').innerText = 
+                        `Live: ${new Date(data.timestamp).toLocaleTimeString()}`;
+                }
+            } catch (error) {
+                console.error("Error fetching metrics:", error);
+            }
+        }
+
+        function renderMetrics(metrics) {
+            const tbody = document.getElementById('metricsTableBody');
+            tbody.innerHTML = '';
+
+            if (!metrics || Object.keys(metrics).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">No metrics recorded yet. Place an order!</td></tr>';
+                return;
+            }
+
+            for (const [methodName, stats] of Object.entries(metrics)) {
+                const row = document.createElement('tr');
+                
+                // Color code rows based on the 500ms NFR threshold defined in our Interceptor
+                let rowClass = "table-success";
+                if (stats.avgTimeMs > 500) rowClass = "table-danger";
+                else if (stats.avgTimeMs > 100) rowClass = "table-warning";
+
+                row.className = rowClass;
+                row.innerHTML = `
+                    <td><strong>${methodName}</strong></td>
+                    <td class="text-center fw-bold">${stats.invocations.toLocaleString()}</td>
+                    <td class="text-center">${stats.avgTimeMs.toFixed(2)}</td>
+                    <td class="text-center">${stats.maxTimeMs.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        // Auto-refresh the dashboard every 2 seconds to show "Real-Time" monitoring
+        setInterval(fetchMetrics, 2000);
+        fetchMetrics(); // Initial load
+    </script>
+</body>
+</html>

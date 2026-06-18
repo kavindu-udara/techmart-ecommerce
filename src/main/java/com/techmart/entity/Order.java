@@ -1,6 +1,7 @@
 package com.techmart.entity;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders", indexes = {
-        @Index(name="idx_order_user", columnList = "user_id"),
+        @Index(name = "idx_order_user", columnList = "user_id"),
         @Index(name = "idx_order_status", columnList = "status")
 })
 
@@ -23,7 +24,7 @@ public class Order {
     private User user;
 
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalAmount;
+    private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -105,8 +106,16 @@ public class Order {
         this.items = items;
     }
 
-    public void addItem(OrderItem item){
+    public void addItem(OrderItem item) {
         items.add(item);
+        item.setOrder(this);
+        this.totalAmount = this.totalAmount.add(item.getSubtotal()); // Adds the item's cost to the total
+    }
+
+    public void removeItem(OrderItem item) {
+        items.remove(item);
+        item.setOrder(null);
+        this.totalAmount = this.totalAmount.subtract(item.getSubtotal());
     }
 
 }
