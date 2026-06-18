@@ -104,4 +104,9 @@ public class Order {
     public void setItems(List<OrderItem> items) {
         this.items = items;
     }
+
+    public void addItem(OrderItem item){
+        items.add(item);
+    }
+
 }
