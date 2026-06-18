@@ -1,6 +1,6 @@
 package com.techmart.monitoring;
 
-import javax.ejb.*;
+import jakarta.ejb.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

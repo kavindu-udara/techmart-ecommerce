@@ -1,9 +1,9 @@
 package com.techmart.jms;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Queue;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.jms.JMSContext;
+import jakarta.jms.Queue;
 import java.util.logging.Logger;
 
 @Stateless
@@ -14,7 +14,7 @@ public class OrderMessageProducer {
     @Inject
     private JMSContext context;
 
-    @javax.annotation.Resource(lookup = "java:/jms/queue/OrderQueue")
+    @jakarta.annotation.Resource(lookup = "java:/jms/queue/OrderQueue")
     private Queue orderQueue;
 
     public void sendOrderForProcessing(Long orderId) {
