@@ -46,6 +46,19 @@
         </dependency>
 
         <!-- Testing: Arquillian for In-Container EJB/JMS Testing -->
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+            <version>1.7.0.Alpha10</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- WildFly Arquillian Managed Container Adapter -->
+        <dependency>
+            <groupId>org.wildfly.arquillian</groupId>
+            <artifactId>wildfly-arquillian-container-managed</artifactId>
+            <version>5.0.1.Final</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
