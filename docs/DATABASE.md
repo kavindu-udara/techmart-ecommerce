@@ -20,6 +20,7 @@ CREATE TABLE products
 (
     id             BIGSERIAL PRIMARY KEY,
     name           VARCHAR(100)   NOT NULL,
+    image_url      VARCHAR(500)   NOT NULL,
     description    TEXT,
     price          DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     stock_quantity INT            NOT NULL DEFAULT 0 CHECK (stock_quantity >= 0),
@@ -65,9 +66,9 @@ CREATE INDEX idx_order_items_product_id ON order_items (product_id);
 INSERT INTO users (username, email, password_hash)
 VALUES ('testuser', 'test@techmart.com', 'hashed_password_123');
 
-INSERT INTO products (name, description, price, stock_quantity)
-VALUES ('Laptop Pro', 'High-performance laptop', 1200.00, 100),
-       ('Wireless Mouse', 'Ergonomic wireless mouse', 25.50, 500),
-       ('Mechanical Keyboard', 'RGB mechanical keyboard', 85.00, 150);
+INSERT INTO products (name, description, image_url, price, stock_quantity)
+VALUES ('Laptop Pro', 'High-performance laptop', 'https://picsum.photos/seed/mouse/400/400', 1200.00, 100),
+       ('Wireless Mouse', 'Ergonomic wireless mouse', 'https://picsum.photos/seed/mouse/400/400', 25.50, 500),
+       ('Mechanical Keyboard', 'RGB mechanical keyboard', 'https://picsum.photos/seed/mouse/400/400', 85.00, 150);
 
 ```
