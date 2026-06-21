@@ -10,7 +10,7 @@ import {
 
 const LoginPage = () => {
     return (
-        <main className="w-full min-h-screen flex justify-center items-center">
+        <main className="w-full min-h-screen flex flex-col gap-3 justify-center items-center">
             <Card className="w-1/3">
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
@@ -32,6 +32,9 @@ const LoginPage = () => {
                     <Button>Login</Button>
                 </CardFooter>
             </Card>
+            <a href="/register" className="text-blue-500 hover:underline">
+                Don't have an account? Register
+            </a>
         </main>
     )
 }

@@ -10,7 +10,7 @@ import {
 
 const RegisterPage = () => {
     return (
-        <main className="w-full min-h-screen flex justify-center items-center">
+        <main className="w-full min-h-screen flex flex-col gap-3 justify-center items-center">
             <Card className="w-1/3">
                 <CardHeader>
                     <CardTitle>Register</CardTitle>
@@ -37,6 +37,9 @@ const RegisterPage = () => {
                     <Button>Register</Button>
                 </CardFooter>
             </Card>
+            <a href="/login" className="text-blue-500 hover:underline">
+                Already have an account? Login
+            </a>
         </main>
     )
 }
