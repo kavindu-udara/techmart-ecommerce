@@ -1,42 +1,60 @@
-import { useEffect, type ReactNode } from "react"
+import { useEffect, type ReactNode, useState } from "react"
 import { apiClient } from "../../lib/axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
-
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
-    // send api req to /me and if unauthorized, return to the login
-    const token = localStorage.getItem("token");
-
-    const handleAuthentication = () => {
-
-        if (!token) {
-            navigate("/login");
-        } else {
-            apiClient.get("/me")
-                .then((response) => {
-                    // token is valid, do nothing
-                    console.log("User is authenticated", response.data);
-                })
-                .catch((error) => {
-                    console.error("Authentication error", error);
-                    // token is invalid, redirect to login
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                });
-        }
-    }
+    const location = useLocation();
 
     useEffect(() => {
-        handleAuthentication();
-    }, [token]);
+        const token = localStorage.getItem("token");
+        
+        // Skip auth check on login page
+        if (location.pathname === "/login") {
+            setIsLoading(false);
+            return;
+        }
 
-    return (
-        <>
-            {children}
-        </>
-    )
+        // If no token, redirect to login
+        if (!token) {
+            navigate("/login", { replace: true });
+            setIsLoading(false);
+            return;
+        }
+
+        // Verify token with API
+        const verifyToken = async () => {
+            try {
+                await apiClient.get("/me");
+                // Token is valid
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Authentication error", error);
+                localStorage.removeItem("token");
+                navigate("/login", { replace: true });
+                setIsLoading(false);
+            }
+        };
+
+        verifyToken();
+    }, [navigate, location.pathname]);
+
+    // Show loading state while checking authentication
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <div className="spinner-border animate-spin" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                    <p>Verifying authentication...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return <>{children}</>;
 }
 
-export default AuthLayout
+export default AuthLayout;
