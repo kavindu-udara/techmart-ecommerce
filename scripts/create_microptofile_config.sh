@@ -1,0 +1,1 @@
+touch src/main/resources/META-INF/microprofile-config.properties
