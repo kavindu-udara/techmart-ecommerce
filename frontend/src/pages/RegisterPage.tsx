@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../components/ui/button";
 import {
     Card,
@@ -7,8 +8,53 @@ import {
     CardHeader,
     CardTitle,
 } from "../components/ui/card";
+import { toast } from "react-toastify";
+import { apiClient } from "../lib/axios";
 
 const RegisterPage = () => {
+
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    }    
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // check all of the fields are filled
+        if (!formData.email || !formData.password || !formData.confirmPassword) {
+            toast.error("Please fill in all the fields");
+            return;
+        }
+
+        // check if password and confirm password match
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }
+
+        apiClient.post("/register", {
+            email: formData.email,
+            password: formData.password
+        })
+        .then((response) => {
+            console.log("Registration successful:", response);
+            toast.success("Registration successful!");
+        })
+        .catch((error) => {
+            console.error("Registration failed:", error);
+            toast.error("Registration failed. Please try again.");
+        });
+    }
+
     return (
         <main className="w-full min-h-screen flex flex-col gap-3 justify-center items-center">
             <Card className="w-1/3">
@@ -20,21 +66,42 @@ const RegisterPage = () => {
                     {/* email */}
                     <div className="flex flex-col gap-2">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
                     {/* password */}
                     <div className="flex flex-col gap-2">
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
                     {/* confirm password */}
                     <div className="flex flex-col gap-2">
                         <label htmlFor="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                    <Button>Register</Button>
+                    <Button onClick={handleSubmit}>Register</Button>
                 </CardFooter>
             </Card>
             <a href="/login" className="text-blue-500 hover:underline">
