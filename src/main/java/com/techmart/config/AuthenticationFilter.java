@@ -2,6 +2,7 @@ package com.techmart.config;
 
 import com.techmart.util.JwtUtil;
 import jakarta.annotation.Priority;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -16,6 +17,9 @@ import java.io.IOException;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
+
+    @Inject
+    private JwtUtil jwtUtil;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -32,7 +36,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = authHeader.substring(BEARER_PREFIX.length()).trim();
 
         try {
-            String userIdString = JwtUtil.validateTokenAndGetUserId(token);
+            String userIdString = jwtUtil.validateTokenAndGetUserId(token);
 
 //            store user id in the request context
             requestContext.setProperty("authenticatedUserId", Long.parseLong(userIdString));

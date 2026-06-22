@@ -8,6 +8,7 @@ import com.techmart.util.PasswordHandler;
 import com.techmart.util.Validators;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.Consumes;
@@ -28,6 +29,9 @@ public class LoginResource {
 
     @EJB
     private UserController userController;
+
+    @Inject
+    private JwtUtil jwtUtil;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,7 +57,7 @@ public class LoginResource {
             }
 
 //            generate JWT token
-            String token = JwtUtil.generateToken(user.getId(), user.getEmail());
+            String token = jwtUtil.generateToken(user.getId(), user.getEmail());
 
 //            return token to client
             Map<String, Object> response = new HashMap<>();
