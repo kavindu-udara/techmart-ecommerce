@@ -10,8 +10,11 @@ import {
 } from "../components/ui/card";
 import { toast } from "react-toastify";
 import { apiClient } from "../lib/axios";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -27,7 +30,7 @@ const LoginPage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         // check if email and password are filled
         if (!formData.email || !formData.password) {
             toast.error("Please fill in all the fields");
@@ -38,14 +41,15 @@ const LoginPage = () => {
             email: formData.email,
             password: formData.password
         })
-        .then((response) => {
-            // store the token in localStorage            
-            localStorage.setItem("token", response.data.token);
-            toast.success("Login successful!");
-        })
-        .catch(() => {
-            toast.error("Login failed. Please check your credentials and try again.");
-        });
+            .then((response) => {
+                // store the token in localStorage            
+                localStorage.setItem("token", response.data.token);
+                toast.success("Login successful!");
+                navigate("/", { replace: true });
+            })
+            .catch(() => {
+                toast.error("Login failed. Please check your credentials and try again.");
+            });
 
     }
 
