@@ -4,6 +4,8 @@ import com.techmart.controller.UserController;
 import com.techmart.dto.RegisterRequest;
 import com.techmart.entity.User;
 import com.techmart.util.Validators;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -15,9 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Stateless
 @Path("/register")
 public class RegisterResource {
     private static final Logger logger = Logger.getLogger(RegisterResource.class.getName());
+
+    @EJB
+    private UserController userController;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -32,7 +38,6 @@ public class RegisterResource {
             }
 
 //            check is user already exists
-            UserController userController = new UserController();
             User existingUser = userController.getUserByEmail(registerRequest.getEmail());
 
             if (existingUser != null) {

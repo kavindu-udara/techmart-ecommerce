@@ -6,6 +6,8 @@ import com.techmart.entity.User;
 import com.techmart.util.JwtUtil;
 import com.techmart.util.PasswordHandler;
 import com.techmart.util.Validators;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.Consumes;
@@ -19,12 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Stateless
 @Path("/login")
 public class LoginResource {
     private static Logger logger = Logger.getLogger(LoginResource.class.getName());
 
-    @PersistenceContext
-    private EntityManager em;
+    @EJB
+    private UserController userController;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -37,7 +40,6 @@ public class LoginResource {
             }
 
 //            check user by email
-            UserController userController = new UserController();
             User user = userController.getUserByEmail(loginRequest.getEmail());
             if (user == null) {
                 logger.warning("User not found for email : " + loginRequest.getEmail());
