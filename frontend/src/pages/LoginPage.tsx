@@ -43,7 +43,7 @@ const LoginPage = () => {
             localStorage.setItem("token", response.data.token);
             toast.success("Login successful!");
         })
-        .catch((error) => {
+        .catch(() => {
             toast.error("Login failed. Please check your credentials and try again.");
         });
 
