@@ -41,7 +41,7 @@ const LoginPage = () => {
             email: formData.email,
             password: formData.password
         })
-            .then((response) => {
+            .then(async (response) => {
                 // store the token in localStorage            
                 localStorage.setItem("token", response.data.token);
                 toast.success("Login successful!");
