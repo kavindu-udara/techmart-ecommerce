@@ -39,11 +39,11 @@ const LoginPage = () => {
             password: formData.password
         })
         .then((response) => {
-            console.log("Login successful", response.data);
+            // store the token in localStorage            
+            localStorage.setItem("token", response.data.token);
             toast.success("Login successful!");
         })
         .catch((error) => {
-            console.error("Login failed", error);
             toast.error("Login failed. Please check your credentials and try again.");
         });
 
