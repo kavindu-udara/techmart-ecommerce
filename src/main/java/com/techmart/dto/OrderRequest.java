@@ -1,4 +1,4 @@
-package com.techmart.rest;
+package com.techmart.dto;
 
 import java.util.List;
 
