@@ -1,12 +1,9 @@
 package com.techmart.rest;
 
+import com.techmart.controller.UserController;
 import com.techmart.dto.RegisterRequest;
 import com.techmart.entity.User;
-import com.techmart.util.PasswordHandler;
 import com.techmart.util.Validators;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -18,24 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Stateless
 @Path("/register")
 public class RegisterResource {
     private static final Logger logger = Logger.getLogger(RegisterResource.class.getName());
-
-    @PersistenceContext
-    private EntityManager em;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(RegisterRequest registerRequest) {
         try {
-
-            if(!Validators.isValidEmail(registerRequest.getEmail())){
-                logger.warning("Email is invalid.");
-                return Response.status(Response.Status.BAD_REQUEST).entity("Invalid email type").build();
-            }
 
 //            check email is in correct type
             if (!Validators.isValidEmail(registerRequest.getEmail())) {
@@ -44,12 +32,9 @@ public class RegisterResource {
             }
 
 //            check is user already exists
-            User existingUser = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
-                    .setParameter("email", registerRequest.getEmail())
-                    .getResultStream()
-                    .findFirst()
-                    .orElse(null);
-
+            UserController userController = new UserController();
+            User existingUser = userController.getUserByEmail(registerRequest.getEmail());
+            
             if (existingUser != null) {
                 logger.warning("User with the email already exist.");
                 return Response.status(Response.Status.BAD_REQUEST).entity("User already exist").build();
@@ -61,16 +46,7 @@ public class RegisterResource {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Password is required.").build();
             }
 
-//            hash the password
-            String hashedPassword = PasswordHandler.hashPassword(password);
-            logger.info("Hashed used password successful.");
-
-//            saved user in db
-            User newUser = new User();
-            newUser.setEmail(registerRequest.getEmail());
-            newUser.setPasswordHash(hashedPassword);
-
-            em.persist(newUser);
+            userController.createNewUser(registerRequest);
             logger.info("New user created success.");
 
             Map<String, Object> response = new HashMap<>();
