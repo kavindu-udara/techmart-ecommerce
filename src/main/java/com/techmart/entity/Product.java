@@ -1,12 +1,13 @@
 package com.techmart.entity;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products", indexes = {
-        @Index(name="idx_product_name", columnList = "name"),
-        @Index(name="idx_product_stock", columnList = "stock_quantity")
+        @Index(name = "idx_product_name", columnList = "name"),
+        @Index(name = "idx_product_stock", columnList = "stock_quantity")
 })
 
 public class Product {
@@ -22,6 +23,9 @@ public class Product {
 
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
+
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 
     @Version
     private Integer version;
@@ -64,5 +68,13 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
