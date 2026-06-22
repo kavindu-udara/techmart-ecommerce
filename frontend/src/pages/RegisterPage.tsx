@@ -45,12 +45,10 @@ const RegisterPage = () => {
             email: formData.email,
             password: formData.password
         })
-        .then((response) => {
-            console.log("Registration successful:", response);
+        .then(() => {
             toast.success("Registration successful!");
         })
-        .catch((error) => {
-            console.error("Registration failed:", error);
+        .catch(() => {
             toast.error("Registration failed. Please try again.");
         });
     }
