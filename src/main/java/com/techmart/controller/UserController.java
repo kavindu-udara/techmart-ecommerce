@@ -21,6 +21,10 @@ public class UserController {
                 .orElse(null);
     }
 
+    public User getUserById(Long id) {
+        return em.find(User.class, id);
+    }
+
     public void createNewUser(RegisterRequest registerRequest) throws Exception {
 //        hash the password
         String hashedPassword = PasswordHandler.hashPassword(registerRequest.getPassword());

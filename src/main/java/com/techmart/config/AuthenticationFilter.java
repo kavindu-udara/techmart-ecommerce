@@ -3,9 +3,11 @@ package com.techmart.config;
 import com.techmart.util.JwtUtil;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
@@ -20,6 +22,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
     private JwtUtil jwtUtil;
+
+    @Context
+    private HttpServletRequest httpRequest;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -39,7 +44,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             String userIdString = jwtUtil.validateTokenAndGetUserId(token);
 
 //            store user id in the request context
-            requestContext.setProperty("authenticatedUserId", Long.parseLong(userIdString));
+            httpRequest.setAttribute("authenticatedUserId", Long.parseLong(userIdString));
         } catch (Exception e) {
             abortWithUnauthorized(requestContext, "Invalid or expired token.");
         }
