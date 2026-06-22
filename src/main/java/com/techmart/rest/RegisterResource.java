@@ -34,7 +34,7 @@ public class RegisterResource {
 //            check is user already exists
             UserController userController = new UserController();
             User existingUser = userController.getUserByEmail(registerRequest.getEmail());
-            
+
             if (existingUser != null) {
                 logger.warning("User with the email already exist.");
                 return Response.status(Response.Status.BAD_REQUEST).entity("User already exist").build();
