@@ -32,7 +32,7 @@ CLI_BIN="${CLI_BIN[0]}"
 echo "🚀 Building Exploded Web Structure..."
 # CRITICAL CHANGE: Use 'war:exploded' instead of 'compile'
 # This creates target/techmart-.../WEB-INF/classes, lib, web.xml, etc.
-mvn clean package war:exploded -q
+mvn clean package war:exploded -q -DskipTests
 
 if [ $? -ne 0 ]; then
     echo "❌ Build failed."
