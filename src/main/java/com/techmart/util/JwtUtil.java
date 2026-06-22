@@ -3,24 +3,38 @@ package com.techmart.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import java.security.Key;
 import java.util.Date;
 
+@ApplicationScoped
 public class JwtUtil {
 
-    public static String generateToken(Long userId, String email) {
+    @Inject
+    @ConfigProperty(name= "jwt.secret" , defaultValue = "DevFallbackKeyMustBeAtLeast32CharsLong!!!")
+    private String secretKey;
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
+    public String generateToken(Long userId, String email) {
         return Jwts.builder()
                 .setSubject(userId.toString())
                 .claim("email", email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + Values.JWT_EXPIRATION_TIME))
-                .signWith(Values.JWT_KEY, SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public static String validateTokenAndGetUserId(String token) {
+    public String validateTokenAndGetUserId(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(Values.JWT_KEY)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
