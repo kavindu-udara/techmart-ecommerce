@@ -92,6 +92,14 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- MicroProfile Config API (Required for @ConfigProperty) -->
+        <dependency>
+            <groupId>org.eclipse.microprofile.config</groupId>
+            <artifactId>microprofile-config-api</artifactId>
+            <version>3.0.3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

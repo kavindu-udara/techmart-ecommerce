@@ -39,3 +39,4 @@ build/
 
 # env
 .env
+src/main/resources/META-INF/microprofile-config.properties
