@@ -18,8 +18,19 @@ public class ProductController {
     @Inject
     private ProductCacheBean productCacheBean;
 
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productCacheBean.getAllProducts();
+    }
+
+    public Product getProductById(Long id) {
+        Product product = productCacheBean.getProductById(id);
+
+        // Fallback to database if not in cache
+        if (product == null) {
+            product = em.find(Product.class, id);
+        }
+
+        return product;
     }
 
 }
