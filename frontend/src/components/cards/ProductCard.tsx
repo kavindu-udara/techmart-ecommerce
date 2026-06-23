@@ -1,26 +1,24 @@
+import type { Product } from "../../types/product";
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from "../ui/card";
 
-const ProductCard = () => {
+type Props = {
+    product: Product;
+}
+
+const ProductCard = ({ product }: Props) => {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-                <CardAction>Card Action</CardAction>
-            </CardHeader>
+        <Card key={product.id} className="flex flex-col">
+            <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover mb-4" />
             <CardContent>
-                <p>Card Content</p>
+                <h2 className="text-lg font-semibold">{product.name}</h2>
+                <p className="text-gray-500">Stock: {product.stockQuantity}</p>
             </CardContent>
             <CardFooter>
-                <p>Card Footer</p>
+                <p className="text-gray-600">${product.price.toFixed(2)}</p>
             </CardFooter>
         </Card>
     )

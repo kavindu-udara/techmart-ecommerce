@@ -1,13 +1,12 @@
 import Header from '../components/common/Header'
 import AuthLayout from '../components/layouts/AuthLayout'
+import ProductsSection from '../components/sections/ProductsSection'
 
 const HomePage = () => {
     return (
         <AuthLayout>
             <Header />
-            <main className="w-full min-h-screen flex flex-col gap-3 justify-center items-center">
-                Welcome to the Home Page
-            </main>
+            <ProductsSection />
         </AuthLayout>
     )
 }
