@@ -33,4 +33,12 @@ public class ProductController {
         return product;
     }
 
+    public List<Product> searchProducts(String query){
+        return em.createQuery(
+                        "SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(:query)",
+                        Product.class)
+                .setParameter("query", "%" + query.trim() + "%")
+                .getResultList();
+    }
+
 }

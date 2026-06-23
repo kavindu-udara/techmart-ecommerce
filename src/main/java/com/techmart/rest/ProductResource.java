@@ -2,18 +2,14 @@ package com.techmart.rest;
 
 import com.techmart.config.Secured;
 import com.techmart.controller.ProductController;
-import com.techmart.ejb.ProductCacheBean;
 import com.techmart.entity.Product;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Stateless
@@ -45,6 +41,22 @@ public class ProductResource {
         }
 
         return Response.ok(product).build();
+    }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchProducts(@QueryParam("q") String query) {
+
+        if (query == null || query.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Search query is required\"}")
+                    .build();
+        }
+
+        List<Product> products = productController.searchProducts(query);
+
+        return Response.ok(products).build();
     }
 
 }
