@@ -8,6 +8,9 @@ import jakarta.annotation.PreDestroy;
 import jakarta.ejb.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -36,6 +39,11 @@ public class ProductCacheBean {
     public void cleanup() {
         logger.info("Destroying Product Cache and freeing memory...");
         productCache = null;
+    }
+
+    @Lock(LockType.READ)
+    public List<Product> getAllProducts(){
+        return Collections.unmodifiableList(productCache);
     }
 
     @Lock(LockType.READ)
