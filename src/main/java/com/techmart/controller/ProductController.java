@@ -6,6 +6,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -39,6 +40,20 @@ public class ProductController {
                         Product.class)
                 .setParameter("query", "%" + query.trim() + "%")
                 .getResultList();
+    }
+
+    public Long getProductsCount(){
+        return em.createQuery("SELECT COUNT(p) FROM Product p", Long.class)
+                .getSingleResult();
+    }
+
+    public List<Product> getPaginatedProducts(int offset, int size){
+
+        TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p ORDER BY p.id", Product.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(size);
+
+        return query.getResultList();
     }
 
 }

@@ -9,7 +9,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Stateless
@@ -57,6 +59,36 @@ public class ProductResource {
         List<Product> products = productController.searchProducts(query);
 
         return Response.ok(products).build();
+    }
+
+    @GET
+    @Path("/paged")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsPaged(
+            @QueryParam("page") @DefaultValue("1") int page,
+            @QueryParam("size") @DefaultValue("10") int size) {
+
+        // Validate parameters
+        if (page < 1) page = 1;
+        if (size < 1 || size > 100) size = 10; // Cap at 100 to prevent abuse
+
+        int offset = (page - 1) * size;
+
+        // Get total count for pagination metadata
+        Long totalCount = productController.getProductsCount();
+
+        // Get paginated results
+        List<Product> products = productController.getPaginatedProducts(offset,size);
+
+        // Build response with pagination metadata
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", products);
+        response.put("page", page);
+        response.put("size", size);
+        response.put("totalElements", totalCount);
+        response.put("totalPages", (int) Math.ceil((double) totalCount / size));
+
+        return Response.ok(response).build();
     }
 
 }
