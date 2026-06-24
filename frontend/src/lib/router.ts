@@ -5,6 +5,7 @@ import RootDataLoader from "../components/loaders/RootDataLoader";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
+import SingleProductPage from "../pages/SingleProductPage";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   }, {
     path: "/register",
     Component: RegisterPage,
+    loader: RootDataLoader
+  },{
+    path: "/products/:id",
+    Component: SingleProductPage,
     loader: RootDataLoader
   }
 ]);
