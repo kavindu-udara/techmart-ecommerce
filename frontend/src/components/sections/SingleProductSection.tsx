@@ -2,6 +2,8 @@ import { useState } from "react"
 import type { Product } from "../../types/product"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
+import { apiClient } from "../../lib/axios"
+import { toast } from "react-toastify"
 
 type Props = {
     product: Product
@@ -18,6 +20,24 @@ const SingleProductSection = ({ product }: Props) => {
             setQuantity(Math.max(1, quantity - 1));
         }
     };
+
+    const handleAddToCart = () => {
+        if (quantity < 0 && quantity > product.stockQuantity) {
+            alert("Invalid quantity");
+        }
+
+        apiClient.post("/cart/items", {
+            productId: product.id,
+            quantity: quantity
+        }).then((response) => {
+            console.log("Item added to cart:", response.data);
+            alert("Item added to cart");
+            toast.success("Item added to cart");
+        }).catch(() => {
+            alert("Failed to add item to cart");
+        });
+
+    }
 
     return (
         <div className="container mx-auto p-4 grid grid-cols-2 gap-8">
@@ -42,7 +62,7 @@ const SingleProductSection = ({ product }: Props) => {
                         +
                     </Button>
                 </div>
-                <Button onClick={() => alert("Add to cart functionality not implemented yet")}>Add to Cart</Button>
+                <Button onClick={handleAddToCart}>Add to Cart</Button>
             </div>
         </div>
     )

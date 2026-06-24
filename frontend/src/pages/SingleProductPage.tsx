@@ -13,8 +13,7 @@ const SingleProductPage = () => {
     useEffect(() => {
         apiClient.get(`/products/${id}`)
             .then(response => {
-                setProduct(response.data);
-                console.log("Fetched product:", response.data);
+                setProduct(response.data);  
             })
             .catch(error => {
                 console.error("Error fetching product:", error);
