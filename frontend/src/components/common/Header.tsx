@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <header className="w-full border-b flex flex-row justify-between items-center p-3 shadow-sm">
-            <h1>Header</h1>
+            <h1 className="text-xl font-bold">TechMart</h1>
             <div className="flex flex-row gap-2 items-center">
                 <Button onClick={() => window.location.href = "/"} className="mr-2">
                     <ShoppingCart />
