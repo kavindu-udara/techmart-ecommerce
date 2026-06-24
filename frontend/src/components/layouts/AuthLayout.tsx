@@ -58,7 +58,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
     return (<>
         <Header />
         {children}
-    </>);
+    </>)
 }
 
 export default AuthLayout;
