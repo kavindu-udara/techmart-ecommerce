@@ -6,9 +6,10 @@ import { useNavigate } from "react-router";
 
 type Props = {
     item: CartItem;
+    handleUpdate: (itemId: number) => void;
 }
 
-const CartItemCard = ({ item }: Props) => {
+const CartItemCard = ({ item, handleUpdate }: Props) => {
 
     const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ const CartItemCard = ({ item }: Props) => {
                 <Button variant={"destructive"} onClick={handleRemoveItem}>
                     Remove
                 </Button>
-                <Button variant={"secondary"} className="ml-2">
+                <Button variant={"secondary"} className="ml-2" onClick={() => handleUpdate(item.itemId)}>
                     Update Quantity
                 </Button>
             </div>
