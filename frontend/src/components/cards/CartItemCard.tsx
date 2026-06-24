@@ -39,7 +39,7 @@ const CartItemCard = ({ item, handleUpdate }: Props) => {
                 <Button variant={"destructive"} onClick={handleRemoveItem}>
                     Remove
                 </Button>
-                <Button variant={"secondary"} className="ml-2" onClick={() => handleUpdate(item.itemId)}>
+                <Button variant={"secondary"} className="ml-2" onClick={() => handleUpdate(item.productId)}>
                     Update Quantity
                 </Button>
             </div>
