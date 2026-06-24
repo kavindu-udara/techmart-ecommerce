@@ -6,6 +6,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
 import SingleProductPage from "../pages/SingleProductPage";
+import CartPage from "../pages/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   },{
     path: "/products/:id",
     Component: SingleProductPage,
+    loader: RootDataLoader
+  }, {
+    path: "/cart",
+    Component:CartPage,
     loader: RootDataLoader
   }
 ]);
