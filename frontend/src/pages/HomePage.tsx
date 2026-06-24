@@ -5,7 +5,6 @@ import ProductsSection from '../components/sections/ProductsSection'
 const HomePage = () => {
     return (
         <AuthLayout>
-            <Header />
             <ProductsSection />
         </AuthLayout>
     )

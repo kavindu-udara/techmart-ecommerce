@@ -1,15 +1,16 @@
 import { useEffect, type ReactNode, useState } from "react"
 import { apiClient } from "../../lib/axios";
 import { useNavigate, useLocation } from "react-router";
+import Header from "../common/Header";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        
+
         // Skip auth check on login page
         if (location.pathname === "/login") {
             setIsLoading(false);
@@ -54,7 +55,10 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
         );
     }
 
-    return <>{children}</>;
+    return (<>
+        <Header />
+        {children}
+    </>)
 }
 
 export default AuthLayout;
