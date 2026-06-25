@@ -3,6 +3,7 @@ import AuthLayout from "../components/layouts/AuthLayout"
 import { apiClient } from "../lib/axios";
 import type { Order } from "../types/order";
 import OrdersSection from "../components/sections/OrdersSection";
+import { toast } from "react-toastify";
 
 const OrdersPage = () => {
 
@@ -15,7 +16,7 @@ const OrdersPage = () => {
         })
             .catch((error) => {
                 console.error("Failed to fetch orders:", error);
-                alert("Failed to fetch orders");
+                toast.error("Failed to fetch orders");
             });
     }, []);
 

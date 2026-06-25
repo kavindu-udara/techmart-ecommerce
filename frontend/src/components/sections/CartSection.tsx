@@ -4,6 +4,7 @@ import CartItemCard from "../cards/CartItemCard";
 import { Button } from "../ui/button";
 import UpdateCartItemDialog from "../dialogs/UpdateCartItemDialog";
 import { apiClient } from "../../lib/axios";
+import { toast } from "react-toastify";
 
 type Props = {
     cart: Cart;
@@ -12,23 +13,21 @@ type Props = {
 const CartSection = ({ cart }: Props) => {
 
     const dialogBtnRef = useRef<HTMLButtonElement>(null);
-    
+
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-    
+
     const handleUpdateCartItem = (itemId: number) => {
         setSelectedItemId(itemId);
         dialogBtnRef.current?.click();
     }
 
     const handlePlaceOrder = () => {
-        apiClient.post('/orders/checkout').then((response) => {
-            console.log("Order placed successfully:", response.data);
-            // alert("Order placed successfully!");
-            // refresh the page to update the cart items
-            // window.location.reload();
+        apiClient.post('/orders/checkout').then(() => {
+            toast.success("Order placed successfully!");
+            window.location.reload();
         }).catch((error) => {
             console.error("Failed to place order:", error);
-            alert("Failed to place order");
+            toast.error("Failed to place order");
         });
     }
 
