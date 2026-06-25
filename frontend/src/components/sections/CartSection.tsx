@@ -19,7 +19,6 @@ const CartSection = ({ cart }: Props) => {
         dialogBtnRef.current?.click();
     }
 
-
     return (
         <div className="container mx-auto p-4">
             {

@@ -176,4 +176,16 @@ public class CartController {
 
         return new CartResponse(cart.getId(), itemResponses, totalAmount, totalItems);
     }
+
+    public Cart getCartEntity(Long userId) {
+        return em.createQuery(
+                        "SELECT c FROM Cart c " +
+                                "LEFT JOIN FETCH c.items i " +
+                                "LEFT JOIN FETCH i.product " +
+                                "WHERE c.user.id = :userId", Cart.class)
+                .setParameter("userId", userId)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
 }
