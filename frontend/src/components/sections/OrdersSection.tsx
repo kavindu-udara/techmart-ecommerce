@@ -7,7 +7,7 @@ type Props = {
 
 const OrdersSection = ({ orders }: Props) => {
     return (
-        <div className="relative w-full flex flex-col gap-4">
+        <div className=" w-full flex flex-col gap-4">
             {orders.map((order: Order) => (
                 <OrderItemCard key={order.id} order={order} />
             ))}

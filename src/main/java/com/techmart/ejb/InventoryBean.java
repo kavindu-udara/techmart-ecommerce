@@ -4,6 +4,7 @@ import com.techmart.entity.Product;
 import com.techmart.monitoring.Monitored;
 
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceContext;
@@ -18,6 +19,9 @@ public class InventoryBean {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Inject
+    private ProductCacheBean productCacheBean;
 
     public boolean deductStock(Long productId, int quantity) {
         int attempts = 0;
@@ -40,6 +44,10 @@ public class InventoryBean {
                 em.flush(); // force the DB to update to trigger the version
 
                 logger.info("Deducted " + quantity + " units from product ID: " + productId);
+
+//                refresh cache
+                productCacheBean.refreshCache();
+
                 return true;
 
             } catch (OptimisticLockException ex) {
@@ -56,6 +64,7 @@ public class InventoryBean {
         Product product = em.find(Product.class, productId);
         if (product != null) {
             product.setStockQuantity(product.getStockQuantity() + quantity);
+            productCacheBean.refreshCache();
         }
     }
 

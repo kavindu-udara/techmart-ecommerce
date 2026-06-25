@@ -7,7 +7,7 @@ type Props = {
 
 const OrderItemCard = ({ order }: Props) => {
     return (
-        <div key={order.id} className="border p-4 rounded">
+        <div key={order.id} className="relative border p-4 rounded">
             <h2 className="text-lg font-semibold">Order ID: {order.id}</h2>
             <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
             <p>Total Amount: ${order.totalAmount.toFixed(2)}</p>
