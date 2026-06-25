@@ -18,6 +18,9 @@ const Header = () => {
                 <Button onClick={() => navigate("/cart")} className="mr-2">
                     <ShoppingCart />
                 </Button>
+                <Button variant={"secondary"} onClick={() => navigate("/orders")}>
+                    Orders
+                </Button>
                 <Button onClick={handleLogout}>Logout</Button>
             </div>
         </header>

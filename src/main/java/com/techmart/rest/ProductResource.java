@@ -2,6 +2,7 @@ package com.techmart.rest;
 
 import com.techmart.config.Secured;
 import com.techmart.controller.ProductController;
+import com.techmart.dto.ProductResponse;
 import com.techmart.entity.Product;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Stateless
 @Path("/products")
@@ -24,10 +26,27 @@ public class ProductResource {
     @EJB
     private ProductController productController;
 
+    private ProductResponse mapToDto(Product p) {
+        return new ProductResponse(
+                p.getId(),
+                p.getName(),
+                p.getPrice(),
+                p.getStockQuantity(),
+                p.getImageUrl()
+        );
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProducts() {
-        return Response.ok(productController.getAllProducts()).build();
+        List<Product> products = productController.getAllProducts();
+
+        // Map all entities to DTOs
+        List<ProductResponse> responseList = products.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+
+        return Response.ok(responseList).build();
     }
 
     @GET
@@ -42,7 +61,7 @@ public class ProductResource {
                     .build();
         }
 
-        return Response.ok(product).build();
+        return Response.ok(mapToDto(product)).build();
     }
 
     @GET
@@ -58,7 +77,11 @@ public class ProductResource {
 
         List<Product> products = productController.searchProducts(query);
 
-        return Response.ok(products).build();
+        List<ProductResponse> responseList = products.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+
+        return Response.ok(responseList).build();
     }
 
     @GET
@@ -80,9 +103,13 @@ public class ProductResource {
         // Get paginated results
         List<Product> products = productController.getPaginatedProducts(offset,size);
 
+        List<ProductResponse> responseList = products.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+
         // Build response with pagination metadata
         Map<String, Object> response = new HashMap<>();
-        response.put("products", products);
+        response.put("products", responseList);
         response.put("page", page);
         response.put("size", size);
         response.put("totalElements", totalCount);
