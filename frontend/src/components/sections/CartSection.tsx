@@ -3,6 +3,7 @@ import type { Cart } from "../../types/cart"
 import CartItemCard from "../cards/CartItemCard";
 import { Button } from "../ui/button";
 import UpdateCartItemDialog from "../dialogs/UpdateCartItemDialog";
+import { apiClient } from "../../lib/axios";
 
 type Props = {
     cart: Cart;
@@ -17,6 +18,18 @@ const CartSection = ({ cart }: Props) => {
     const handleUpdateCartItem = (itemId: number) => {
         setSelectedItemId(itemId);
         dialogBtnRef.current?.click();
+    }
+
+    const handlePlaceOrder = () => {
+        apiClient.post('/orders/checkout').then((response) => {
+            console.log("Order placed successfully:", response.data);
+            // alert("Order placed successfully!");
+            // refresh the page to update the cart items
+            // window.location.reload();
+        }).catch((error) => {
+            console.error("Failed to place order:", error);
+            alert("Failed to place order");
+        });
     }
 
     return (
@@ -37,7 +50,7 @@ const CartSection = ({ cart }: Props) => {
 
             <div className="w-full flex flex-col items-end mt-4">
                 <h2 className="text-xl font-bold">Total: ${cart.totalAmount.toFixed(2)}</h2>
-                <Button>Place Order</Button>
+                <Button onClick={handlePlaceOrder}>Place Order</Button>
             </div>
 
             <UpdateCartItemDialog triggerRef={dialogBtnRef} itemId={selectedItemId} />

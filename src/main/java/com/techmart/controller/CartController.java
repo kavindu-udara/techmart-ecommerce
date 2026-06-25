@@ -179,9 +179,9 @@ public class CartController {
 
     public Cart getCartEntity(Long userId) {
         return em.createQuery(
-                        "SELECT c FROM Cart c " +
-                                "LEFT JOIN FETCH c.items i " +
-                                "LEFT JOIN FETCH i.product " +
+                        "SELECT DISTINCT c FROM Cart c " +
+                                "LEFT JOIN FETCH c.items " +
+                                "LEFT JOIN FETCH c.items.product " +
                                 "WHERE c.user.id = :userId", Cart.class)
                 .setParameter("userId", userId)
                 .getResultStream()
