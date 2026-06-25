@@ -15,8 +15,8 @@ public class OrderController {
     public List<Order> getOrdersByUserId(Long userId) {
         return em.createQuery(
                         "SELECT DISTINCT o FROM Order o " +
-                                "LEFT JOIN FETCH o.items i " +
-                                "LEFT JOIN FETCH i.product " +
+                                "LEFT JOIN FETCH o.items " +
+                                "LEFT JOIN FETCH o.items.product " +
                                 "WHERE o.user.id = :userId " +
                                 "ORDER BY o.createdAt DESC", Order.class)
                 .setParameter("userId", userId)
