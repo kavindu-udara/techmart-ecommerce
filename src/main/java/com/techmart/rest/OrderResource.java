@@ -2,7 +2,9 @@ package com.techmart.rest;
 
 import com.techmart.config.Secured;
 import com.techmart.controller.CartController;
+import com.techmart.controller.OrderController;
 import com.techmart.dto.OrderRequest;
+import com.techmart.dto.OrderResponse;
 import com.techmart.ejb.ProductCacheBean;
 import com.techmart.entity.*;
 import com.techmart.jms.OrderMessageProducer;
@@ -14,15 +16,14 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -45,6 +46,9 @@ public class OrderResource {
 
     @EJB
     private CartController cartController;
+
+    @EJB
+    private OrderController orderController;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -164,6 +168,51 @@ public class OrderResource {
         } catch (Exception e) {
             logger.severe("Error placing order from cart: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMyOrders(@Context HttpServletRequest request) {
+        try {
+            Long userId = (Long) request.getAttribute("authenticatedUserId");
+            if (userId == null) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("{\"error\": \"Not authenticated\"}").build();
+            }
+
+            List<Order> orders = orderController.getOrdersByUserId(userId);
+
+            List<OrderResponse> responseList = orders.stream().map(order -> {
+                // Map OrderItems
+                List<OrderResponse.OrderItemResponse> itemResponses = order.getItems().stream().map(item -> {
+                    Product p = item.getProduct();
+                    return new OrderResponse.OrderItemResponse(
+                            p.getId(),
+                            p.getName(),
+                            p.getImageUrl(),
+                            item.getQuantity(),
+                            item.getUnitPrice(),
+                            item.getSubtotal() // Uses the @Transient method in OrderItem entity
+                    );
+                }).collect(Collectors.toList());
+
+                // Map Order
+                return new OrderResponse(
+                        order.getId(),
+                        order.getTotalAmount(),
+                        order.getStatus().name(), // Converts Enum to String (e.g., "PENDING")
+                        order.getCreatedAt(),
+                        itemResponses
+                );
+            }).collect(Collectors.toList());
+
+            return Response.ok(responseList).build();
+
+        } catch (Exception e) {
+            logger.severe("Error fetching user orders: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\": \"Server error\"}").build();
         }
     }
 
