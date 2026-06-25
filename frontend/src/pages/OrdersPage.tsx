@@ -11,7 +11,6 @@ const OrdersPage = () => {
 
     useEffect(() => {
         apiClient.get('/orders').then((response) => {
-            console.log("Fetched orders:", response.data);
             setOrders(response.data);
         })
             .catch((error) => {
