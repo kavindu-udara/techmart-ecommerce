@@ -17,6 +17,14 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Column(name="password_hash", nullable = false, length = 255)
     private String passwordHash;
 
