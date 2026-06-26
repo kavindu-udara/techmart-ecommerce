@@ -11,7 +11,6 @@ const OrdersSection = ({ orders }: Props) => {
             {orders.map((order: Order) => (
                 <OrderItemCard key={order.id} order={order} />
             ))}
-          
         </div>
     )
 }
