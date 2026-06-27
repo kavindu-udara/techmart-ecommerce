@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Stateless
 @Path("/admin")
 @Secured
-@AdminOnly
 @Monitored
 public class AdminResource {
     private static final Logger logger = Logger.getLogger(AdminResource.class.getName());

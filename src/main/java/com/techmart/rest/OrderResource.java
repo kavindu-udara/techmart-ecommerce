@@ -1,5 +1,7 @@
 package com.techmart.rest;
 
+import com.techmart.config.AuthenticatedUser;
+import com.techmart.config.AuthenticationFilter;
 import com.techmart.config.Secured;
 import com.techmart.controller.CartController;
 import com.techmart.controller.OrderController;
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -43,6 +46,9 @@ public class OrderResource {
 
     @Inject
     private ProductCacheBean productCacheBean;
+
+    @Inject
+    private AuthenticatedUser authenticatedUser;
 
     @EJB
     private CartController cartController;
@@ -113,9 +119,10 @@ public class OrderResource {
     @POST
     @Path("/checkout")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response placeOrderFromCart(@Context HttpServletRequest request) {
+    public Response placeOrderFromCart(@Context HttpServletRequest httpRequest) {
         try {
-            Long userId = (Long) request.getAttribute("authenticatedUserId");
+            Long userId = (Long) httpRequest.getAttribute(AuthenticationFilter.AUTHENTICATED_USER_ID);
+
             if (userId == null) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\": \"Not authenticated\"}").build();
             }

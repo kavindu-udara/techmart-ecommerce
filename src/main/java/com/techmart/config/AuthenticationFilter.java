@@ -13,42 +13,48 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+
+    private static final Logger logger = Logger.getLogger(AuthenticationFilter.class.getName());
     private static final String BEARER_PREFIX = "Bearer ";
+    public static final String AUTHENTICATED_USER_ID = "authenticatedUserId";
 
     @Inject
     private JwtUtil jwtUtil;
 
     @Context
     private HttpServletRequest httpRequest;
-
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-//        get the Authorization header
         String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-//        check if header exist and start with "Bearer "
         if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
             abortWithUnauthorized(requestContext, "Missing or invalid Authorization header");
             return;
         }
 
-//        extract the token
         String token = authHeader.substring(BEARER_PREFIX.length()).trim();
 
         try {
-            String userIdString = jwtUtil.validateTokenAndGetUserId(token);
+            String userIdStr = jwtUtil.validateTokenAndGetUserId(token);
+            Long userId = Long.parseLong(userIdStr);
 
-//            store user id in the request context
-            httpRequest.setAttribute("authenticatedUserId", Long.parseLong(userIdString));
+            // ✅ Set BOTH: ContainerRequestContext property (for filters)
+            // AND HttpServletRequest attribute (for resources)
+            requestContext.setProperty(AUTHENTICATED_USER_ID, userId);
+            httpRequest.setAttribute(AUTHENTICATED_USER_ID, userId);
+
+            logger.info("✅ User " + userId + " authenticated successfully");
+
         } catch (Exception e) {
-            abortWithUnauthorized(requestContext, "Invalid or expired token.");
+            logger.warning("❌ Token validation failed: " + e.getMessage());
+            abortWithUnauthorized(requestContext, "Invalid or expired token");
         }
-
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext, String message) {
