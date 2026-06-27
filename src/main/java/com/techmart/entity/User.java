@@ -17,8 +17,20 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Column(name="password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private UserRole role = UserRole.CUSTOMER;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -35,6 +47,11 @@ public class User {
     public User(String email, String passwordHash){
         this.email = email;
         this.passwordHash = passwordHash;
+    }
+
+    // Enum for user roles
+    public enum UserRole {
+        CUSTOMER, ADMIN
     }
 
     public Long getId() {
