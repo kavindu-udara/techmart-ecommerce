@@ -9,6 +9,7 @@ import SingleProductPage from "../pages/SingleProductPage";
 import CartPage from "../pages/CartPage";
 import OrdersPage from "../pages/OrdersPage";
 import AdminLoginPage from "../pages/admin/AdminLoginPage";
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 
 const router = createBrowserRouter([
   {
@@ -35,9 +36,9 @@ const router = createBrowserRouter([
     path: "/orders",
     Component:OrdersPage,
     loader: RootDataLoader
-  }, {
-    path: "/admin/login",
-    Component: AdminLoginPage,
+  },{
+    path: "/admin/dashboard",
+    Component: AdminDashboardPage,
     loader: RootDataLoader
   }
 ]);
