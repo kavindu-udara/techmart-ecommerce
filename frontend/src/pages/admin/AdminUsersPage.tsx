@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button"
 import { useEffect, useState } from "react";
 import { apiClient } from "../../lib/axios";
 import type { UserResponseType } from "../../types/admin";
+import AdminDashboardLayout from "../../components/layouts/AdminDashboardLayout";
 
 const AdminUsersPage = () => {
 
@@ -14,18 +15,13 @@ const AdminUsersPage = () => {
     useEffect(() => {
         apiClient.get("admin/users").then((response) => {
             setUsers(response.data);
-            console.log("Users fetched:", response.data);
         }).catch((error) => {
             console.error("Error fetching users:", error);
         });
     }, []);
 
     return (
-        <AuthLayout>
-            <div className="flex flex-wrap gap-3 container mx-auto p-5">
-                <Button onClick={() => navigate("/admin/dashboard")}>Go back</Button>
-                <h1 className="font-semibold text-2xl">Users</h1>
-            </div>
+        <AdminDashboardLayout title="Users">
             <table className="container mx-auto divide-y divide-gray-200">
                 <thead>
                     <tr className="bg-gray-50">
@@ -44,7 +40,7 @@ const AdminUsersPage = () => {
                     ))}
                 </tbody>
             </table>
-        </AuthLayout>
+        </AdminDashboardLayout>
     )
 }
 
