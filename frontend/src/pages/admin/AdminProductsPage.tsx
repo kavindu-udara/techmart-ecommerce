@@ -5,6 +5,7 @@ import type { Product } from "../../types/product";
 import { Button } from "../../components/ui/button";
 import AddProductDialog from "../../components/dialogs/AddProductDialog";
 import UpdateProductDialog from "../../components/dialogs/UpdateProductDialog";
+import { toast } from "react-toastify";
 
 const AdminProductsPage = () => {
 
@@ -26,6 +27,22 @@ const AdminProductsPage = () => {
         setSelectedProduct(product);
         updateProductDialogTriggerRef.current?.click();
     };
+
+    const handleProductDelete = (productId: number) => {
+        if (!confirm("Are you sure you want to delete this product?")) {
+            return;
+        }
+
+        apiClient.delete(`/admin/products/${productId}`)
+            .then(() => {
+                toast.success("Product deleted successfully!");
+                setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
+            })
+            .catch((error) => {
+                console.error("Error deleting product:", error);
+                toast.error("Failed to delete product. Please try again.");
+            });
+    }
 
     return (
         <AdminDashboardLayout title="Products">
@@ -49,8 +66,9 @@ const AdminProductsPage = () => {
                             <td className="border">{product.name}</td>
                             <td className="border">${product.price.toFixed(2)}</td>
                             <td className="border">{product.stockQuantity}</td>
-                            <td className="border">
+                            <td className="border flex flex-wrap gap-5">
                                 <Button onClick={() => handleProductUpdateDialog(product)}>Edit</Button>
+                                <Button variant="destructive" onClick={() => handleProductDelete(product.id)}>Delete</Button>
                             </td>
                         </tr>
                     ))}
