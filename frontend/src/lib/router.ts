@@ -11,6 +11,7 @@ import OrdersPage from "../pages/OrdersPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminUsersPage from "../pages/admin/AdminUsersPage";
 import AdminOrdersPage from "../pages/admin/AdminOrdersPage";
+import AdminProductsPage from "../pages/admin/AdminProductsPage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   },{
     path: "/admin/orders",
     Component: AdminOrdersPage,
+    loader: RootDataLoader
+  }, {
+    path: "/admin/products",
+    Component: AdminProductsPage,
     loader: RootDataLoader
   }
 
