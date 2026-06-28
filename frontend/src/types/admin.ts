@@ -13,3 +13,13 @@ export type UserResponseType = {
     email: string;
     createdAt: string;
 }
+
+export type AdminOrderResponseType = {
+    id: number;
+    userId: number;
+    userEmail: string;
+    itemCount: number;
+    totalAmount: number;
+    status: "PENDING" | "COMPLETED" | "CANCELLED";
+    createdAt: string;
+}

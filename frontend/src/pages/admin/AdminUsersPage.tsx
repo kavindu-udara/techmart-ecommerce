@@ -1,14 +1,9 @@
-import { useNavigate } from "react-router";
-import AuthLayout from "../../components/layouts/AuthLayout"
-import { Button } from "../../components/ui/button"
 import { useEffect, useState } from "react";
 import { apiClient } from "../../lib/axios";
 import type { UserResponseType } from "../../types/admin";
 import AdminDashboardLayout from "../../components/layouts/AdminDashboardLayout";
 
 const AdminUsersPage = () => {
-
-    const navigate = useNavigate();
 
     const [users, setUsers] = useState<UserResponseType[]>([]);
 
