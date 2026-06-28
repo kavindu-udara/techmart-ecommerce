@@ -35,7 +35,7 @@ const AddProductDialog = ({ triggerRef }: Props) => {
         }
 
         apiClient.post("/admin/products", formData)
-            .then((response) => {
+            .then(() => {
                 toast.success("Product created successfully!");
                 triggerRef.current?.click(); // Close the dialog
                 window.location.reload(); // Refresh the page to show the new product
