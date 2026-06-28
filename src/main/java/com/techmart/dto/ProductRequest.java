@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 
 public class ProductRequest {
     private String name;
-    private String description;
     private BigDecimal price;
     private Integer stockQuantity;
-    private String imageUrl;
 
     public ProductRequest() {}
 
@@ -17,14 +15,6 @@ public class ProductRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public BigDecimal getPrice() {
@@ -43,11 +33,4 @@ public class ProductRequest {
         this.stockQuantity = stockQuantity;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }
