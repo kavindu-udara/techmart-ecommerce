@@ -23,7 +23,7 @@ const AdminUsersPage = () => {
     return (
         <AuthLayout>
             <div className="flex flex-wrap gap-3 container mx-auto p-5">
-                <Button onClick={() => navigate(-1)}>Go back</Button>
+                <Button onClick={() => navigate("/admin/dashboard")}>Go back</Button>
                 <h1 className="font-semibold text-2xl">Users</h1>
             </div>
             <table className="container mx-auto divide-y divide-gray-200">
