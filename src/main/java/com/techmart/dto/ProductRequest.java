@@ -6,6 +6,7 @@ public class ProductRequest {
     private String name;
     private BigDecimal price;
     private Integer stockQuantity;
+    private String imageUrl;
 
     public ProductRequest() {}
 
@@ -33,4 +34,11 @@ public class ProductRequest {
         this.stockQuantity = stockQuantity;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

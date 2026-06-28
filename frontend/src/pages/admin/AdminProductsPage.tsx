@@ -66,7 +66,8 @@ const AddProductDialog = ({triggerRef} : {triggerRef: React.RefObject<HTMLButton
     const [formData, setFormData] = useState({
         name: "",
         price: 0,
-        stockQuantity: 0
+        stockQuantity: 0,
+        imageUrl: "",
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,6 +120,10 @@ const AddProductDialog = ({triggerRef} : {triggerRef: React.RefObject<HTMLButton
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="stockQuantity" className="text-right">Stock </Label>
                         <Input id="stockQuantity" type="number" className="col-span-3" value={formData.stockQuantity} onChange={handleInputChange} />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="imageUrl" className="text-right">Image URL</Label>
+                        <Input id="imageUrl" type="text" className="col-span-3" value={formData.imageUrl} onChange={handleInputChange} />
                     </div>
                     <div className="flex justify-end">
                         <Button onClick={handleSubmit}>Create Product</Button>
