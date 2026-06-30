@@ -34,6 +34,7 @@ public class AdminResource {
     @GET
     @Path("/dashboard")
     @Produces(MediaType.APPLICATION_JSON)
+    @Monitored
     public Response getDashboard() {
         try {
             AdminDashboardResponse stats = adminController.getDashboardStats();

@@ -3,6 +3,7 @@ package com.techmart.rest;
 import com.techmart.controller.UserController;
 import com.techmart.dto.RegisterRequest;
 import com.techmart.entity.User;
+import com.techmart.monitoring.Monitored;
 import com.techmart.util.Validators;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 
 @Stateless
 @Path("/register")
+@Monitored
 public class RegisterResource {
     private static final Logger logger = Logger.getLogger(RegisterResource.class.getName());
 

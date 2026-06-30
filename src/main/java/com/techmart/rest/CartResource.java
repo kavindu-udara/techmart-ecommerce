@@ -4,6 +4,7 @@ import com.techmart.config.Secured;
 import com.techmart.controller.CartController;
 import com.techmart.dto.AddToCartRequest;
 import com.techmart.dto.CartResponse;
+import com.techmart.monitoring.Monitored;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +48,7 @@ public class CartResource {
 
     @POST
     @Path("/items")
+    @Monitored
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addToCart(AddToCartRequest addToCartRequest, @Context HttpServletRequest request) {
