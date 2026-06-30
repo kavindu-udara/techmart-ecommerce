@@ -23,4 +23,17 @@ public class OrderController {
                 .getResultList();
     }
 
+    public Order getOrderByPaymentIntentId(String paymentIntentId) {
+        return em.createQuery(
+                        "SELECT o FROM Order o WHERE o.paymentIntentId = :paymentIntentId", Order.class)
+                .setParameter("paymentIntentId", paymentIntentId)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void CreateOrder(Order order){
+        em.persist(order);
+    }
+
 }
