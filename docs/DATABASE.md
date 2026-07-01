@@ -80,6 +80,12 @@ CREATE TABLE cart_items (
 CREATE INDEX idx_cart_items_cart_id ON cart_items(cart_id);
 CREATE INDEX idx_cart_items_product_id ON cart_items(product_id);
 
+ALTER TABLE orders ADD COLUMN payment_intent_id VARCHAR(255);
+ALTER TABLE orders ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'UNPAID';
+
+CREATE INDEX idx_orders_payment_intent ON orders(payment_intent_id);
+CREATE INDEX idx_orders_payment_status ON orders(payment_status);
+
 -- =================================================================
 -- Initial Seed Data (For Testing & Demonstration)
 -- =================================================================

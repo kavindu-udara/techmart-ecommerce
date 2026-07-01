@@ -3,6 +3,7 @@ package com.techmart.rest;
 import com.techmart.controller.UserController;
 import com.techmart.dto.LoginRequest;
 import com.techmart.entity.User;
+import com.techmart.monitoring.Monitored;
 import com.techmart.util.JwtUtil;
 import com.techmart.util.PasswordHandler;
 import com.techmart.util.Validators;
@@ -34,6 +35,7 @@ public class LoginResource {
     private JwtUtil jwtUtil;
 
     @POST
+    @Monitored
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest loginRequest) {

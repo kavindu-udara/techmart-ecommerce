@@ -10,9 +10,10 @@ import java.util.List;
 @Entity
 @Table(name = "orders", indexes = {
         @Index(name = "idx_order_user", columnList = "user_id"),
-        @Index(name = "idx_order_status", columnList = "status")
+        @Index(name = "idx_order_status", columnList = "status"),
+        @Index(name = "idx_order_payment_intent", columnList = "payment_intent_id"),
+        @Index(name = "idx_order_payment_status", columnList = "payment_status")
 })
-
 public class Order {
 
     @Id
@@ -30,8 +31,30 @@ public class Order {
     @Column(nullable = false, length = 20)
     private OrderStatus status = OrderStatus.PENDING;
 
+    @Column(name = "payment_intent_id", length = 255)
+    private String paymentIntentId;
+
+    @Column(name = "payment_status", nullable = false, length = 20)
+    private String paymentStatus = "UNPAID"; // UNPAID, PAID, FAILED, REFUNDED
+
     @Version
     private Integer version;
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentIntentId() {
+        return paymentIntentId;
+    }
+
+    public void setPaymentIntentId(String paymentIntentId) {
+        this.paymentIntentId = paymentIntentId;
+    }
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -43,8 +66,6 @@ public class Order {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
-//    Helper method to maintain bidirectional relationship consistency
 
     public enum OrderStatus {
         PENDING, PROCESSING, COMPLETED, FAILED

@@ -4,6 +4,7 @@ import com.techmart.config.Secured;
 import com.techmart.controller.ProductController;
 import com.techmart.dto.ProductResponse;
 import com.techmart.entity.Product;
+import com.techmart.monitoring.Monitored;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.ws.rs.*;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Path("/products")
+@Monitored
 @Secured
 public class ProductResource {
 
